@@ -64,7 +64,7 @@ export function HeroSection() {
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="heading-display text-[clamp(48px,10vw,140px)] text-[#111]"
+                className="heading-display hero-title-tone text-[clamp(48px,10vw,140px)]"
               >
                 GOOD
                 <br />
@@ -120,7 +120,7 @@ export function HeroSection() {
         transition={{ delay: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="label-accent text-[#6F6F6F] text-xs">Scroll</span>
+        {/* <span className="label-accent text-[#6F6F6F] text-xs">Scroll</span> */}
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}

@@ -32,8 +32,10 @@
     --color-accent: #F2C94C;
     --color-text-primary: #111111;
     --color-text-secondary: #6F6F6F;
+    --color-hero-title: #2E255C;
   }
 }
+
 
 @layer base {
   * {
@@ -64,6 +66,20 @@
     text-transform: uppercase;
     letter-spacing: -0.05em;
     line-height: 0.85;
+  }
+
+  .hero-title-tone {
+    color: var(--color-hero-title);
+  }
+
+  .cart-button-tone {
+    background: var(--color-hero-title);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(192, 188, 178, 0.22);
+  }
+
+  .cart-button-tone:hover {
+    background: #838543;
   }
   
   .label-accent {

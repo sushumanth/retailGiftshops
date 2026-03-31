@@ -71,7 +71,7 @@ export function Navbar() {
                 onClick={toggleCart}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-[#111] text-white"
+                className="cart-button-tone relative flex items-center gap-2 px-4 py-2 rounded-full transition-colors"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span className="label-accent text-white">Cart ({getTotalItems()})</span>
