@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 14% 96%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 60 14% 96%;
+    --secondary: 0 0% 44%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 60 10% 92%;
+    --muted-foreground: 0 0% 44%;
+    --accent: 45 87% 62%;
+    --accent-foreground: 0 0% 7%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 60 10% 88%;
+    --input: 60 10% 88%;
+    --ring: 45 87% 62%;
+    --radius: 1.75rem;
+    
+    --color-bg-primary: #F6F6F2;
+    --color-bg-secondary: #0B0B0D;
+    --color-accent: #F2C94C;
+    --color-text-primary: #111111;
+    --color-text-secondary: #6F6F6F;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#F6F6F2] text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+}
+
+@layer components {
+  .heading-display {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 0.85;
+  }
+  
+  .label-accent {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+  
+  .product-card {
+    @apply bg-white rounded-[28px] overflow-hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.14);
+  }
+  
+  .product-card-image {
+    @apply rounded-[22px] overflow-hidden;
+  }
+  
+  .gradient-lavender {
+    background: linear-gradient(180deg, rgba(168, 144, 255, 0.28), rgba(168, 144, 255, 0) 60%);
+  }
+  
+  .gradient-peach {
+    background: linear-gradient(180deg, rgba(255, 160, 122, 0.28), rgba(255, 160, 122, 0) 60%);
+  }
+  
+  .gradient-mint {
+    background: linear-gradient(180deg, rgba(143, 232, 184, 0.28), rgba(143, 232, 184, 0) 60%);
+  }
+  
+  .btn-primary {
+    @apply bg-[#F2C94C] text-[#111111] px-8 py-4 rounded-full font-semibold transition-all duration-300;
+  }
+  
+  .btn-primary:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 10px 30px rgba(242, 201, 76, 0.4);
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-[#111111] text-[#111111] px-8 py-4 rounded-full font-semibold transition-all duration-300;
+  }
+  
+  .btn-secondary:hover {
+    @apply bg-[#111111] text-white transform -translate-y-1;
+  }
+  
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+  
+  .section-pinned {
+    @apply w-screen h-screen relative overflow-hidden;
+  }
+  
+  .decorative-ring {
+    @apply absolute rounded-full border-2 border-[#111111]/10;
+    animation: slowRotate 20s linear infinite;
+  }
+  
+  @keyframes slowRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
