@@ -4,9 +4,11 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
 import { ProductCard } from '@/components/ProductCard';
 import { products } from '@/data/products';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
@@ -14,7 +16,6 @@ export function HeroSection() {
 
   const headlineX = useTransform(scrollYProgress, [0, 0.5], [0, -400]);
   const headlineOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const cardX = useTransform(scrollYProgress, [0, 0.5], [0, 300]);
   const cardRotateY = useTransform(scrollYProgress, [0, 0.5], [0, -15]);
   const decorY = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
@@ -23,7 +24,7 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="section-pinned bg-[#F6F6F2] relative overflow-hidden"
+      className="w-screen min-h-[100svh] md:h-screen bg-[#F6F6F2] relative overflow-hidden"
     >
       {/* Gradient Overlay */}
       <div className="absolute inset-0 gradient-lavender pointer-events-none" />
@@ -39,7 +40,7 @@ export function HeroSection() {
       {/* Decorative Elements */}
       <motion.div
         style={{ y: decorY }}
-        className="absolute right-[28vw] top-[14vh] decorative-ring w-24 h-24 opacity-30"
+        className="absolute right-[28vw] top-[14vh] decorative-ring w-24 h-24 opacity-30 hidden md:block"
       />
       <motion.div
         style={{ y: decorY }}
@@ -51,20 +52,20 @@ export function HeroSection() {
       />
 
       {/* Content */}
-      <div className="relative h-full flex items-center">
-        <div className="w-full px-6 lg:px-[6vw]">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div className="relative min-h-[100svh] md:h-full flex items-start md:items-center pt-24 pb-10 md:py-0">
+        <div className="w-full px-4 sm:px-6 lg:px-[6vw]">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-7 md:gap-8">
             {/* Left Content */}
             <motion.div
-              style={{ x: headlineX, opacity: headlineOpacity }}
-              className="flex-1 max-w-xl"
+              style={isMobile ? { opacity: headlineOpacity } : { x: headlineX, opacity: headlineOpacity }}
+              className="flex-1 max-w-xl w-full"
             >
               {/* Headline */}
               <motion.h1
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="heading-display hero-title-tone text-[clamp(48px,10vw,140px)]"
+                className="heading-display hero-title-tone leading-[0.88] text-[clamp(56px,21vw,120px)] lg:text-[clamp(62px,10vw,140px)]"
               >
                 GOOD
                 <br />
@@ -76,7 +77,7 @@ export function HeroSection() {
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-[clamp(16px,1.6vw,22px)] text-[#6F6F6F] mt-6"
+                className="text-[clamp(14px,4.3vw,22px)] text-[#6F6F6F] mt-4 md:mt-6"
               >
                 Gifts, fancy & everyday joy.
               </motion.p>
@@ -86,9 +87,9 @@ export function HeroSection() {
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="flex flex-col sm:flex-row items-start gap-4 mt-8"
+                className="flex flex-col sm:flex-row items-start gap-4 mt-6 md:mt-8 w-full sm:w-auto"
               >
-                <Link to="/products" className="btn-primary flex items-center gap-2">
+                <Link to="/products" className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto">
                   Shop New Arrivals
                   <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -104,10 +105,10 @@ export function HeroSection() {
               initial={{ x: 100, rotateY: 20, opacity: 0 }}
               animate={{ x: 0, rotateY: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              style={{ x: cardX, rotateY: cardRotateY }}
-              className="flex-shrink-0"
+              style={isMobile ? undefined : { rotateY: cardRotateY }}
+              className="flex-shrink-0 w-full lg:w-auto flex justify-center lg:justify-end"
             >
-              <ProductCard product={featuredProduct} size="large" />
+              <ProductCard product={featuredProduct} size={isMobile ? 'medium' : 'large'} />
             </motion.div>
           </div>
         </div>
@@ -118,7 +119,7 @@ export function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
       >
         {/* <span className="label-accent text-[#6F6F6F] text-xs">Scroll</span> */}
         <motion.div

@@ -33,16 +33,16 @@ export function Navbar() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-[#F6F6F2]/90 backdrop-blur-md shadow-sm'
+            ? 'bg-[#F6F6F2]/95 md:bg-[#F6F6F2]/90 md:backdrop-blur-md shadow-sm'
             : 'bg-transparent'
         }`}
       >
-        <div className="w-full px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20">
+        <div className="w-full px-4 sm:px-6 lg:px-12">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <motion.span
-                className="heading-display text-xl lg:text-2xl text-[#111]"
+                className="heading-display text-lg sm:text-xl lg:text-2xl text-[#111]"
                 whileHover={{ scale: 1.02 }}
               >
                 GOOD THINGS
@@ -65,16 +65,17 @@ export function Navbar() {
             </div>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Cart Button */}
               <motion.button
                 onClick={toggleCart}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="cart-button-tone relative flex items-center gap-2 px-4 py-2 rounded-full transition-colors"
+                className="cart-button-tone relative flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full transition-colors"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span className="label-accent text-white">Cart ({getTotalItems()})</span>
+                <span className="label-accent text-white hidden sm:inline">Cart ({getTotalItems()})</span>
+                <span className="label-accent text-white sm:hidden">{getTotalItems()}</span>
               </motion.button>
 
               {/* Mobile Menu Button */}
@@ -82,7 +83,7 @@ export function Navbar() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="lg:hidden p-2"
+                className="lg:hidden p-1.5 sm:p-2"
               >
                 {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </motion.button>

@@ -3,6 +3,11 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import type { Mesh } from 'three';
 
+function deterministicRandom(index: number, salt: number): number {
+  const value = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+}
+
 function FloatingOrb({
   color,
   position,
@@ -49,9 +54,9 @@ function DustParticles() {
     const points = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i += 1) {
-      points[i * 3] = (Math.random() - 0.5) * 16;
-      points[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      points[i * 3 + 2] = (Math.random() - 0.5) * 8;
+      points[i * 3] = (deterministicRandom(i, 1) - 0.5) * 16;
+      points[i * 3 + 1] = (deterministicRandom(i, 2) - 0.5) * 10;
+      points[i * 3 + 2] = (deterministicRandom(i, 3) - 0.5) * 8;
     }
 
     return points;
@@ -100,9 +105,9 @@ function ContactBackground3DComponent() {
   return (
     <div className="absolute inset-0 pointer-events-none" aria-hidden>
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, 1.25]}
         camera={{ position: [0, 0, 6.8], fov: 46 }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
       >
         <fog attach="fog" args={['#F6F6F2', 7, 16]} />
         <SceneContent />

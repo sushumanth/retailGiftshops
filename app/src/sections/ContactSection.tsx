@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { MapPin, Phone, Clock, Instagram, Send, ArrowUpRight } from 'lucide-react';
 import { ContactBackground3D } from '@/components/ContactBackground3D';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const instagramImages = [
   '/images/instagram_01.jpg',
@@ -14,6 +15,7 @@ const instagramImages = [
 
 export function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [subscribeMessage, setSubscribeMessage] = useState('');
@@ -45,7 +47,7 @@ export function ContactSection() {
       ref={sectionRef}
       className="bg-gradient-to-b from-[#F6F6F2] to-[#FFFBF5] relative overflow-hidden z-[80]"
     >
-      <ContactBackground3D />
+      {!isMobile && <ContactBackground3D />}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_20%,rgba(255,255,255,0.78),transparent_42%),radial-gradient(circle_at_82%_76%,rgba(255,255,255,0.55),transparent_45%)] pointer-events-none" />
 
       {/* Main Contact Content */}

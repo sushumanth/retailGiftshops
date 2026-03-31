@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, ShoppingBag } from 'lucide-react';
 import { products, categories, normalizeCategory } from '@/data/products';
@@ -14,12 +14,23 @@ const sortOptions = [
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoryFromUrl = searchParams.get('category') || 'all';
+  const selectedCategory = searchParams.get('category') || 'all';
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl);
   const [sortBy, setSortBy] = useState('featured');
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+
+  const handleCategoryChange = (category: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+
+    if (category === 'all') {
+      nextParams.delete('category');
+    } else {
+      nextParams.set('category', category);
+    }
+
+    setSearchParams(nextParams, { replace: true });
+  };
 
   const catalogStats = useMemo(() => {
     const newArrivals = products.filter(
@@ -36,31 +47,6 @@ export function ProductsPage() {
       inStock,
     };
   }, []);
-
-  // Keep local category state in sync with browser URL (back/forward gestures)
-  useEffect(() => {
-    if (selectedCategory !== categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
-    }
-  }, [categoryFromUrl, selectedCategory]);
-
-  // Update URL when category changes
-  useEffect(() => {
-    if (selectedCategory === categoryFromUrl) {
-      return;
-    }
-
-    const nextParams = new URLSearchParams(searchParams);
-
-    if (selectedCategory === 'all') {
-      nextParams.delete('category');
-    } else {
-      nextParams.set('category', selectedCategory);
-    }
-
-    // Replace avoids polluting history for each filter click, making back navigation reliable.
-    setSearchParams(nextParams, { replace: true });
-  }, [selectedCategory, categoryFromUrl, searchParams, setSearchParams]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -165,7 +151,7 @@ export function ProductsPage() {
           className="flex flex-wrap gap-2 mb-8"
         >
           <button
-            onClick={() => setSelectedCategory('all')}
+            onClick={() => handleCategoryChange('all')}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
               selectedCategory === 'all'
                 ? 'bg-[#111] text-white'
@@ -177,7 +163,7 @@ export function ProductsPage() {
           {categories.map((cat) => (
             <button
               key={`overview-${cat.id}`}
-              onClick={() => setSelectedCategory(cat.id)}
+              onClick={() => handleCategoryChange(cat.id)}
               className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
                 selectedCategory === cat.id
                   ? 'bg-[#F2C94C] text-[#111]'
@@ -260,7 +246,7 @@ export function ProductsPage() {
                     <h3 className="label-accent text-[#6F6F6F] mb-4">CATEGORIES</h3>
                     <div className="flex flex-wrap gap-2">
                       <button
-                        onClick={() => setSelectedCategory('all')}
+                        onClick={() => handleCategoryChange('all')}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           selectedCategory === 'all'
                             ? 'bg-[#F2C94C] text-[#111]'
@@ -272,7 +258,7 @@ export function ProductsPage() {
                       {categories.map((cat) => (
                         <button
                           key={cat.id}
-                          onClick={() => setSelectedCategory(cat.id)}
+                          onClick={() => handleCategoryChange(cat.id)}
                           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                             selectedCategory === cat.id
                               ? 'bg-[#F2C94C] text-[#111]'
@@ -352,7 +338,7 @@ export function ProductsPage() {
             <button
               onClick={() => {
                 setSearchQuery('');
-                setSelectedCategory('all');
+                handleCategoryChange('all');
                 setPriceRange([0, 5000]);
               }}
               className="btn-primary mt-4"

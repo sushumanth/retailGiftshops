@@ -8,8 +8,11 @@ import { ArrivalsSection } from '@/sections/ArrivalsSection';
 import { ViewAllSection } from '@/sections/ViewAllSection';
 import { BeautifulSection } from '@/sections/BeautifulSection';
 import { ContactSection } from '@/sections/ContactSection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export function HomePage() {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     // Smooth scroll to top on mount
     window.scrollTo(0, 0);
@@ -18,7 +21,7 @@ export function HomePage() {
   return (
     <main className="relative">
       {/* Noise Overlay */}
-      <div className="noise-overlay" />
+      {!isMobile && <div className="noise-overlay" />}
       
       {/* Sections with z-index stacking */}
       <HeroSection />

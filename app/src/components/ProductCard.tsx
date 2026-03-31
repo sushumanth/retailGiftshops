@@ -47,9 +47,9 @@ export function ProductCard({
   };
 
   const sizeClasses = {
-    small: 'w-[22vw] min-w-[200px] h-[26vh] min-h-[200px]',
-    medium: 'w-[26vw] min-w-[240px] h-[44vh] min-h-[360px]',
-    large: 'w-[34vw] min-w-[300px] h-[56vh] min-h-[450px]',
+    small: 'w-[68vw] max-w-[240px] h-[34vh] min-h-[220px] sm:w-[22vw] sm:min-w-[200px] sm:h-[26vh] sm:min-h-[200px]',
+    medium: 'w-[78vw] max-w-[330px] h-[48vh] min-h-[330px] sm:w-[26vw] sm:min-w-[240px] sm:h-[44vh] sm:min-h-[360px]',
+    large: 'w-[84vw] max-w-[380px] h-[56vh] min-h-[360px] sm:w-[34vw] sm:min-w-[300px] sm:h-[56vh] sm:min-h-[450px]',
   };
 
   return (
