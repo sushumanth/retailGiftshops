@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, ShoppingBag } from 'lucide-react';
-import { products, categories } from '@/data/products';
+import { products, categories, normalizeCategory } from '@/data/products';
 import { ProductCard } from '@/components/ProductCard';
 import { useSearchParams } from 'react-router-dom';
 
@@ -14,21 +14,53 @@ const sortOptions = [
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFromUrl = searchParams.get('category') || 'all';
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl);
   const [sortBy, setSortBy] = useState('featured');
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
 
+  const catalogStats = useMemo(() => {
+    const newArrivals = products.filter(
+      (product) =>
+        product.tag === 'NEW' || normalizeCategory(product.category) === 'new-arrivals'
+    ).length;
+
+    const inStock = products.filter((product) => product.inStock).length;
+
+    return {
+      totalProducts: products.length,
+      totalCategories: categories.length,
+      newArrivals,
+      inStock,
+    };
+  }, []);
+
+  // Keep local category state in sync with browser URL (back/forward gestures)
+  useEffect(() => {
+    if (selectedCategory !== categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl, selectedCategory]);
+
   // Update URL when category changes
   useEffect(() => {
-    if (selectedCategory === 'all') {
-      searchParams.delete('category');
-    } else {
-      searchParams.set('category', selectedCategory);
+    if (selectedCategory === categoryFromUrl) {
+      return;
     }
-    setSearchParams(searchParams);
-  }, [selectedCategory]);
+
+    const nextParams = new URLSearchParams(searchParams);
+
+    if (selectedCategory === 'all') {
+      nextParams.delete('category');
+    } else {
+      nextParams.set('category', selectedCategory);
+    }
+
+    // Replace avoids polluting history for each filter click, making back navigation reliable.
+    setSearchParams(nextParams, { replace: true });
+  }, [selectedCategory, categoryFromUrl, searchParams, setSearchParams]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -48,7 +80,7 @@ export function ProductsPage() {
     // Filter by category
     if (selectedCategory !== 'all') {
       result = result.filter(
-        (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
+        (p) => normalizeCategory(p.category) === normalizeCategory(selectedCategory)
       );
     }
 
@@ -66,7 +98,13 @@ export function ProductsPage() {
         result.sort((a, b) => b.price - a.price);
         break;
       case 'newest':
-        result.sort((a) => (a.tag === 'NEW' ? -1 : 1));
+        result.sort((a, b) => {
+          const aIsNew =
+            a.tag === 'NEW' || normalizeCategory(a.category) === 'new-arrivals';
+          const bIsNew =
+            b.tag === 'NEW' || normalizeCategory(b.category) === 'new-arrivals';
+          return Number(bIsNew) - Number(aIsNew);
+        });
         break;
       default:
         // Featured - keep original order
@@ -92,6 +130,63 @@ export function ProductsPage() {
           <p className="text-[#6F6F6F] mt-4 max-w-xl">
             Discover our curated collection of gifts, fancy items, and everyday joys.
           </p>
+        </motion.div>
+
+        {/* Catalog Overview */}
+        <motion.div
+          initial={{ y: 18, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.45, delay: 0.05 }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6"
+        >
+          <div className="bg-white rounded-2xl p-4 border border-[#EAEAE3]">
+            <p className="label-accent text-[#6F6F6F] mb-1">Total Products</p>
+            <p className="text-2xl font-bold text-[#111]">{catalogStats.totalProducts}</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 border border-[#EAEAE3]">
+            <p className="label-accent text-[#6F6F6F] mb-1">Categories</p>
+            <p className="text-2xl font-bold text-[#111]">{catalogStats.totalCategories}</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 border border-[#EAEAE3]">
+            <p className="label-accent text-[#6F6F6F] mb-1">New Arrivals</p>
+            <p className="text-2xl font-bold text-[#111]">{catalogStats.newArrivals}</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 border border-[#EAEAE3]">
+            <p className="label-accent text-[#6F6F6F] mb-1">In Stock</p>
+            <p className="text-2xl font-bold text-[#111]">{catalogStats.inStock}</p>
+          </div>
+        </motion.div>
+
+        {/* Quick Category Overview */}
+        <motion.div
+          initial={{ y: 18, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.45, delay: 0.08 }}
+          className="flex flex-wrap gap-2 mb-8"
+        >
+          <button
+            onClick={() => setSelectedCategory('all')}
+            className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+              selectedCategory === 'all'
+                ? 'bg-[#111] text-white'
+                : 'bg-white text-[#111] hover:bg-[#111] hover:text-white'
+            }`}
+          >
+            All ({products.length})
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={`overview-${cat.id}`}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                selectedCategory === cat.id
+                  ? 'bg-[#F2C94C] text-[#111]'
+                  : 'bg-white text-[#111] hover:bg-[#111] hover:text-white'
+              }`}
+            >
+              {cat.name} ({cat.productCount})
+            </button>
+          ))}
         </motion.div>
 
         {/* Search and Filter Bar */}

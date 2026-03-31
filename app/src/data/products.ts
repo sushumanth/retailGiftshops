@@ -181,7 +181,182 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 34,
   },
+  {
+    id: '17',
+    name: 'Gift Hamper - Blush Edition',
+    price: 1499,
+    image: '/images/viewall_giftwrap.jpg',
+    category: 'Gifts',
+    tag: 'BESTSELLER',
+    description: 'A ready-to-gift hamper with premium wrapping, ribbon detailing, and curated keepsakes for celebrations.',
+    inStock: true,
+    rating: 4.8,
+    reviews: 27,
+  },
+  {
+    id: '18',
+    name: 'Lavender Candle Duo',
+    price: 1299,
+    image: '/images/gifts_candle_lavender.jpg',
+    category: 'Gifts',
+    description: 'Set of two calming lavender candles with a long and clean burn. Perfect for gifting and cozy evenings.',
+    inStock: true,
+    rating: 4.7,
+    reviews: 31,
+  },
+  {
+    id: '19',
+    name: 'Personal Note Card Bundle',
+    price: 699,
+    image: '/images/gifts_cards_set.jpg',
+    category: 'Gifts',
+    description: 'A premium card bundle with textured paper and elegant envelopes for thoughtful notes and gift messages.',
+    inStock: true,
+    rating: 4.6,
+    reviews: 22,
+  },
+  {
+    id: '20',
+    name: 'Pearl Hair Claw - Ivory',
+    price: 549,
+    image: '/images/fancy_scrunchie_silk.jpg',
+    category: 'Accessories',
+    description: 'A polished ivory hair claw with pearl accents for quick styling and everyday elegance.',
+    inStock: true,
+    rating: 4.5,
+    reviews: 17,
+  },
+  {
+    id: '21',
+    name: 'Pastel Charm Key Fob',
+    price: 429,
+    image: '/images/new_keychain_beaded.jpg',
+    category: 'Accessories',
+    description: 'Soft pastel beadwork with metallic accents. Lightweight, durable, and easy to spot in any bag.',
+    inStock: true,
+    rating: 4.6,
+    reviews: 25,
+  },
+  {
+    id: '22',
+    name: 'Crystal Perfume Atomizer',
+    price: 1199,
+    image: '/images/fancy_perfume_roller.jpg',
+    category: 'Fancy',
+    tag: 'NEW',
+    description: 'Refillable atomizer in a crystal-finish shell for easy fragrance touch-ups on the go.',
+    inStock: true,
+    rating: 4.8,
+    reviews: 20,
+  },
+  {
+    id: '23',
+    name: 'Satin Scrunchie Trio',
+    price: 749,
+    image: '/images/fancy_scrunchie_silk.jpg',
+    category: 'Fancy',
+    description: 'Three satin-finish scrunchies designed for all-day comfort and minimal hair breakage.',
+    inStock: true,
+    rating: 4.7,
+    reviews: 26,
+  },
+  {
+    id: '24',
+    name: 'Mini Vanity Tray - Sand',
+    price: 999,
+    image: '/images/beautiful_ceramic_tray.jpg',
+    category: 'Fancy',
+    description: 'A compact textured tray for jewelry, perfume, and daily essentials on your vanity or work desk.',
+    inStock: true,
+    rating: 4.7,
+    reviews: 19,
+  },
+  {
+    id: '25',
+    name: 'Weekly Planner - Linen Cover',
+    price: 649,
+    image: '/images/beautiful_notebook_linen.jpg',
+    category: 'Stationery',
+    description: 'Minimal undated weekly planner with linen cover and smooth pages for focused planning.',
+    inStock: true,
+    rating: 4.8,
+    reviews: 29,
+  },
+  {
+    id: '26',
+    name: 'Letter Writing Kit - Classic',
+    price: 579,
+    image: '/images/gifts_cards_set.jpg',
+    category: 'Stationery',
+    description: 'A classic stationery kit with letter sheets, matching envelopes, and elegant writing prompts.',
+    inStock: true,
+    rating: 4.6,
+    reviews: 16,
+  },
+  {
+    id: '27',
+    name: 'Botanical Teacup - Smoke',
+    price: 1049,
+    image: '/images/new_teacup_amber.jpg',
+    category: 'New Arrivals',
+    tag: 'NEW',
+    description: 'A newly dropped smoke-tint glass teacup with a botanical silhouette and balanced grip.',
+    inStock: true,
+    rating: 4.7,
+    reviews: 14,
+  },
+  {
+    id: '28',
+    name: 'Mini Desk Planter - Sand',
+    price: 829,
+    image: '/images/arrivals_succulent.jpg',
+    category: 'New Arrivals',
+    tag: 'NEW',
+    description: 'Compact planter with warm sand finish, ideal for desks, shelves, and gifting moments.',
+    inStock: true,
+    rating: 4.8,
+    reviews: 21,
+  },
+  {
+    id: '29',
+    name: 'Washi Tape Duo - Florals',
+    price: 459,
+    image: '/images/arrivals_washi_tape.jpg',
+    category: 'New Arrivals',
+    tag: 'NEW',
+    description: 'Two floral-pattern washi tapes from our latest drop, perfect for journals and gift packaging.',
+    inStock: true,
+    rating: 4.5,
+    reviews: 13,
+  },
+  {
+    id: '30',
+    name: 'Signature Scent Discovery Set',
+    price: 1399,
+    image: '/images/fancy_perfume_roller.jpg',
+    category: 'New Arrivals',
+    tag: 'NEW',
+    description: 'Explore mini fragrance blends from our newest collection with a gift-ready discovery box.',
+    inStock: true,
+    rating: 4.9,
+    reviews: 18,
+  },
 ];
+
+export const normalizeCategory = (value: string): string => {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};
+
+const getCategoryProductCount = (categoryId: string): number => {
+  return products.filter(
+    (product) => normalizeCategory(product.category) === normalizeCategory(categoryId)
+  ).length;
+};
 
 export const categories: Category[] = [
   {
@@ -189,42 +364,42 @@ export const categories: Category[] = [
     name: 'Gifts',
     image: '/images/gifts_candle_lavender.jpg',
     description: 'Thoughtful picks for birthdays, thank-yous, and just-because moments.',
-    productCount: 24,
+    productCount: getCategoryProductCount('gifts'),
   },
   {
     id: 'fancy',
     name: 'Fancy Items',
     image: '/images/fancy_scrunchie_silk.jpg',
     description: 'Elevated essentials that make everyday feel special.',
-    productCount: 18,
+    productCount: getCategoryProductCount('fancy'),
   },
   {
     id: 'decorative',
     name: 'Decorative',
     image: '/images/hero_vase_sage.jpg',
     description: 'Beautiful pieces to transform your living space.',
-    productCount: 32,
+    productCount: getCategoryProductCount('decorative'),
   },
   {
     id: 'stationery',
     name: 'Stationery',
     image: '/images/beautiful_notebook_linen.jpg',
     description: 'Premium paper goods for the modern creative.',
-    productCount: 15,
+    productCount: getCategoryProductCount('stationery'),
   },
   {
     id: 'accessories',
     name: 'Accessories',
     image: '/images/new_keychain_beaded.jpg',
     description: 'Stylish add-ons to complete your look.',
-    productCount: 21,
+    productCount: getCategoryProductCount('accessories'),
   },
   {
     id: 'new-arrivals',
     name: 'New Arrivals',
     image: '/images/new_teacup_amber.jpg',
     description: 'This week\'s favorites—small batches, big charm.',
-    productCount: 12,
+    productCount: getCategoryProductCount('new-arrivals'),
   },
 ];
 
@@ -269,12 +444,14 @@ export const getProductById = (id: string): Product | undefined => {
 
 export const getProductsByCategory = (category: string): Product[] => {
   return products.filter(
-    (p) => p.category.toLowerCase() === category.toLowerCase()
+    (p) => normalizeCategory(p.category) === normalizeCategory(category)
   );
 };
 
 export const getNewArrivals = (): Product[] => {
-  return products.filter((p) => p.tag === 'NEW');
+  return products.filter(
+    (p) => p.tag === 'NEW' || normalizeCategory(p.category) === 'new-arrivals'
+  );
 };
 
 export const getBestsellers = (): Product[] => {
